@@ -7,6 +7,14 @@ movies.splice(100)
 const moviesWrapper = $('.movies');
 const categoryOption = $('#category');
 const inputSearch = $('#header-input');
+const resultCount = $('#result-count');
+const body = $('body');
+const header = $('header');
+const aside = $('aside');
+const footer = $('footer');
+const input = $$('input');
+const select = $('select')
+const darkMoonBtn = $('.dark-moon');
 
 
 // // ------------- Normalize Data -----------------/>
@@ -103,13 +111,57 @@ renderAllMovies(allMovies)
 // // ------------- Filter Search Movies ---------------/>
 
 inputSearch.addEventListener('keyup', (e) => {
-    moviesWrapper.innerHTML = ""
-    searchProduct(e.target.value)
+    if (e.keyCode == 13) {
+        moviesWrapper.innerHTML = "<span class='loader'></span>"
+    setTimeout(()=> {
+        searchProduct(e.target.value)
+    },1800)
+    }
 })
 function searchProduct(searchABC) {
     const searchResult = allMovies.filter((el) => el.title.toLowerCase().includes(searchABC.toLowerCase()))
-    renderAllMovies(searchResult)
+    
+    if (searchResult.length) {
+        moviesWrapper.innerHTML = ""
+        resultCount.innerHTML = `Result: ${searchResult.length} movies found`;
+        renderAllMovies(searchResult)
+    }
+    else {
+        moviesWrapper.innerHTML = `
+        <div class="found">
+        <h1 class=' font-bold text-red-600 font-serif text-3xl'>NO INFORMATION FOUND!</h1>
+        <a href="/" class=" px-[16px] py-[8px]  bg-green-600 text-white rounded-lg my-6">Home</a>
+        </div>
+        `
+    }
+    
 }
+
+// // ------------- function dark-mode Movies ---------------/>
+
+
+function darkMode() {
+    body.classList.toggle('dark-mode');
+    header.classList.toggle('dark-mode');
+    aside.classList.toggle('dark-mode');
+    footer.classList.toggle('dark-mode');
+
+    input.forEach((el) => {
+        el.classList.toggle('dark-mode');
+    })
+
+    select.classList.toggle('dark-mode');
+}
+
+
+darkMoonBtn.addEventListener('click', () => {
+    darkMode()
+})
+
+
+
+
+
 
 
 
